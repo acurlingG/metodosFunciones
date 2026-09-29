@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.SqlServer.Server;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
@@ -10,92 +11,136 @@ namespace Vecttores
     internal class Program
     {
 
+        static readonly int  N = 3;
+        static string[] estudiante = new string[N];
+        static int[] nota = new int[N];
 
-        static float num1=0, num2 = 0, resultado = 0; // variables globales para almacenar los números y el resultado
-      
-        static void SocilitarDatos()
-        {
-            Console.WriteLine("Digite el primer numero: ");
-            num1 = float.Parse(Console.ReadLine());
-            Console.WriteLine("Digite el segundo numero: ");
-            num2 = float.Parse (Console.ReadLine());
-         
-        }
 
-      
-        static void suma()
+        static void IngresarEstudiantes()
         {
-            resultado = num1 + num2;
-            Console.WriteLine("El resultado de la suma es: " + resultado);
-        }
-
-        static void resta(float n1, float n2)
-        {
-            resultado = n1 - n2;
-            Console.WriteLine("El resultado de la resta es: " + resultado);
-        }
-
-        static float multiplicar()
-        {
-            return num1 * num2;
-        }
-
-        static float dividir(float n1, float n2)
-        {
-            if (n2 != 0)
+            for (int i = 0; i < estudiante.Length; i++)
             {
-                return n1 / n2;
+                Console.Write("Ingrese el nombre del estudiante: ");
+                estudiante[i] = Console.ReadLine();
+                Console.Write("Ingrese la nota del estudiante: ");
+                nota[i] = int.Parse(Console.ReadLine());
             }
-            else
+        }   
+
+
+        static void mostrarEstudiantes(){
+            Boolean Encontrado = false;
+            Console.WriteLine("Digite un Estudiante");
+            string nomb = Console.ReadLine();
+            for (int i = 0; i < estudiante.Length; i++)
             {
-                Console.WriteLine("Error: No se puede dividir entre cero.");
-                return 0; // Retorna 0 en caso de división por cero
+                if (estudiante[i] == nomb)
+                {
+                    Console.WriteLine($"El estudiante {estudiante[i]} tiene una nota de {nota[i]}");
+                    Encontrado = true;
+                    break; 
+                }
+
+            }
+            if (Encontrado ==false)
+            {
+                Console.WriteLine("Estudiante no encontrado");
             }
         }
+
+        static void modificarEstudiantes()
+        {
+            Boolean Encontrado = false;
+            Console.WriteLine("Digite un Estudiante");
+            string nomb = Console.ReadLine();
+            for (int i = 0; i < estudiante.Length; i++)
+            {
+                if (estudiante[i] == nomb)
+                {
+                    Console.WriteLine($"El estudiante {estudiante[i]} tiene una nota de {nota[i]}");
+                    Console.WriteLine("Digite el nuevo nombre");
+                    estudiante[i] = Console.ReadLine();
+                    Console.WriteLine("Digite la nueva nota:");
+                    nota[i] = int.Parse(Console.ReadLine());
+                    Encontrado = true;
+                    break;
+                }
+
+            }
+            if (Encontrado == false)
+            {
+                Console.WriteLine("Estudiante no encontrado");
+            }
+        }
+
+        static void reporteEstudiantes()
+        {    Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("****** Reporte de Estudiantes ******");
+            Console.WriteLine(" Nombre                 Nota");
+            Console.ForegroundColor = ConsoleColor.White;
+            for (int i = 0; i < estudiante.Length; i++)
+            {
+                Console.WriteLine($" {estudiante[i]}        {nota[i]}");
+            }
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("******   ultima linea");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
 
         static void menu()
         {
-            int opcion;  // variable local para almacenar la opción seleccionada por el usuario
-            Console.WriteLine("1. Suma ");
-            Console.WriteLine("2. Resta ");
-            Console.WriteLine("3. Multiplicar ");
-            Console.WriteLine("4. Dividir");
-            Console.WriteLine("5. Salir");
-            Console.WriteLine("digite una opcion:");
-            int.TryParse(Console.ReadLine(), out  opcion);
-            switch (opcion)
+            int opcion = 0;
+
+            do
             {
-                case 1:
-                    SocilitarDatos();
-                    suma();
-                    break;
-                case 2:
-                    SocilitarDatos();
-                    resta(num1, num2);
-                    break;
-                case 3:
-                    SocilitarDatos();
-                    Console.WriteLine("El resultado de la multiplicacion es: " + multiplicar());
-                    break;
-                case 4:
-                    SocilitarDatos();
-                    Console.WriteLine("Dividir");
-                    break;      
-                case 5: Console.WriteLine("Salir del sistema");
-                    break;
-                default:
-                    Console.WriteLine("Opcion no valida");
-                    break;
-            }
+                
+                Console.WriteLine("1. Ingresar Estudiantes");
+                Console.WriteLine("2. Mostrar Estudiantes");
+                Console.WriteLine("3. Modificar Estudiantes");
+                Console.WriteLine("4. Eliminar Estudiantes");
+                Console.WriteLine("5- Reporte");
+                Console.WriteLine("6. Salir");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("Ingrese una opción: ");
+                opcion = int.Parse(Console.ReadLine());
+                Console.ForegroundColor = ConsoleColor.White;
+                switch (opcion)
+                {
+                    case 1:
+                        IngresarEstudiantes();
+                        break;
+                    case 2:
+                        mostrarEstudiantes();
+                        break;
+                    case 3:
+                        modificarEstudiantes();
+                        break;
+                    case 4:
+                        //eliminarEstudiantes();
+                        break;
+                    case 5:
+                        reporteEstudiantes();
+                        break;
+                    case 6:
+                        Environment.Exit(0);
+                        break;
+                    default:
+                        Console.WriteLine("opcion incorrecta");
+                        break;
+                }
+
+            } while (opcion != 6 );
+            
         }
 
         static void Main(string[] args)
         {
-            menu();
+
+           menu();
+
 
         }
-        
-        
 
     }
 }
